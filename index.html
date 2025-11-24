@@ -125,21 +125,24 @@
   <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/pop-soft.mp3" preload="auto"></audio>
   <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/error-tone.mp3" preload="auto"></audio>
 
-  <!-- Add Base SDK -->
+  <!-- ========== BASE MINI APP SDK ========== -->
   <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
   <script>
-    // Initialize Base Mini App SDK
+    // Initialize Base SDK and call ready() IMMEDIATELY
     if (window.EmbedSDK) {
       window.EmbedSDK.init();
+      console.log('Base SDK initialized');
+      
+      // Call ready() immediately after initialization
+      setTimeout(() => {
+        if (window.EmbedSDK && window.EmbedSDK.actions) {
+          window.EmbedSDK.actions.ready();
+          console.log('Base SDK ready() called immediately');
+        }
+      }, 100);
+    } else {
+      console.log('Base SDK not available');
     }
-    <!-- Add this right before your script.js -->
-<script type="module">
-  import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-  window.FarcasterMiniAppSDK = sdk;
-  
-  document.addEventListener('DOMContentLoaded', async () => {
-    await sdk.actions.ready();
-  });
   </script>
   
   <script src="script.js"></script>
