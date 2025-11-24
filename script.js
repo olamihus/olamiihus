@@ -202,6 +202,8 @@
   };
 
   const init = () => {
+    // Initialize Farcaster Mini App SDK first
+    initMiniApp();
     buildButtons();
     addTapListener(resetBtn, () => loadLevel(currentLevel, true));
     addTapListener(newGameBtn, handleNewGame);
@@ -645,37 +647,56 @@
 })();
 
 // Enhanced Farcaster & Base Mini App Integration
-const initMiniApp = () => {
-  // Base Mini App SDK
-  if (window.EmbedSDK) {
-    window.EmbedSDK.init();
-    console.log('Base Mini App SDK initialized');
-  }
-  
-  // Farcaster Frame Integration
-  if (window.FarcasterFrameSdk) {
-    try {
+const initMiniApp = async () => {
+  try {
+    // Base Mini App SDK
+    if (window.EmbedSDK) {
+      window.EmbedSDK.init();
+      console.log('Base Mini App SDK initialized');
+    }
+    
+    // Farcaster Mini App SDK - THIS IS THE KEY ADDITION
+    if (window.sdk && window.sdk.actions) {
+      // Call ready() as soon as the app is loaded to hide the splash screen
+      await window.sdk.actions.ready();
+      console.log('Farcaster Mini App ready - splash screen hidden');
+      
+      // Optional: Listen for frame actions if needed
+      window.sdk.actions.on('action', (event) => {
+        console.log('Frame action received:', event);
+      });
+    } else if (window.FarcasterFrameSdk) {
+      // Fallback for older SDK versions
       FarcasterFrameSdk.actions.ready();
       console.log('Farcaster Frame ready');
       
       FarcasterFrameSdk.actions.on('action', (event) => {
         console.log('Frame action received:', event);
       });
-    } catch (error) {
-      console.log('Farcaster Frame SDK not available');
+    } else {
+      console.log('Farcaster Mini App SDK not detected - running in standalone mode');
     }
-  }
-  
-  if (window.ethereum && window.ethereum.isMiniApp) {
-    console.log('Running in Warpcast Mini App');
+    
+    // Check if running in embedded environment
+    if (window.ethereum && window.ethereum.isMiniApp) {
+      console.log('Running in Warpcast Mini App');
+    }
+    
+    // Handle mobile viewport for embedded apps
+    if (window.self !== window.top) {
+      document.body.classList.add('embedded');
+      
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+      }
+    }
+  } catch (error) {
+    console.error('Error initializing mini app:', error);
   }
 };
 
-// Update the DOMContentLoaded event
-window.addEventListener("DOMContentLoaded", () => {
-  init();
-  initMiniApp();
-});
+
 
 // Handle mobile viewport for embedded apps
 if (window.self !== window.top) {
@@ -686,8 +707,3 @@ if (window.self !== window.top) {
     viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
   }
 }
-// Start the game
-document.addEventListener("DOMContentLoaded", async () => {
-    await initFrame();
-    init();
-});
