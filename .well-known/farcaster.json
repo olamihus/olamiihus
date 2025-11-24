@@ -1,0 +1,32 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "", 
+    "signature": ""
+  },
+  "baseBuilder": {
+    "ownerAddress": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Filler Quest",
+    "homeUrl": "https://olamiihus.vercel.app/",
+    "iconUrl": "https://i.imgur.com/qvzaD42.png",
+    "imageUrl": "https://i.imgur.com/qvzaD42.png",
+    "splashImageUrl": "https://i.imgur.com/qvzaD42.png",
+    "splashBackgroundColor": "#3367D6",
+    "subtitle": "Colorful puzzle game",
+    "description": "Fill each board before the moves run out. A strategic color puzzle game!",
+    "screenshotUrls": [
+      "https://i.imgur.com/qvzaD42.png"
+    ],
+    "primaryCategory": "games",
+    "tags": ["puzzle", "strategy", "colors", "game", "fun"],
+    "heroImageUrl": "https://i.imgur.com/qvzaD42.png",
+    "tagline": "Fill the board, beat it",
+    "ogTitle": "Filler Quest",
+    "ogDescription": "Fill each board before the moves run out. A colorful puzzle game!",
+    "ogImageUrl": "https://i.imgur.com/qvzaD42.png",
+    "noindex": false
+  }
+}
