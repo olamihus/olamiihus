@@ -1,29 +1,3 @@
-import { sdk } from 'https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest/+esm';
-
-// Initialize Farcaster Mini App SDK immediately
-let farcasterInitialized = false;
-
-const initializeFarcasterSDK = async () => {
-  try {
-    if (sdk && sdk.actions) {
-      await sdk.actions.ready();
-      console.log('Farcaster Mini App ready - splash screen hidden');
-      farcasterInitialized = true;
-      
-      // Optional: Listen for frame actions if needed
-      sdk.actions.on('action', (event) => {
-        console.log('Frame action received:', event);
-      });
-    }
-  } catch (error) {
-    console.log('Farcaster Mini App SDK not available - running in standalone mode');
-  }
-};
-
-// Call this immediately when the module loads
-initializeFarcasterSDK();
-
-// Your existing game code wrapped in IIFE
 (() => {
   const palette = ["#f43f5e", "#fb923c", "#facc15", "#22c55e", "#3b82f6", "#a855f7"];
   const floodDelay = 55;
