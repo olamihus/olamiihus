@@ -132,6 +132,14 @@
     if (window.EmbedSDK) {
       window.EmbedSDK.init();
     }
+    <!-- Add this right before your script.js -->
+<script type="module">
+  import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+  window.FarcasterMiniAppSDK = sdk;
+  
+  document.addEventListener('DOMContentLoaded', async () => {
+    await sdk.actions.ready();
+  });
   </script>
   
   <script src="script.js"></script>
