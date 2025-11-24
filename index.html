@@ -112,24 +112,11 @@
   <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/pop-soft.mp3" preload="auto"></audio>
   <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/error-tone.mp3" preload="auto"></audio>
 
+  <!-- Add Farcaster SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk@latest"></script>
+  
   <!-- Add Base SDK -->
   <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
-  
-  <!-- Farcaster SDK and immediate ready call -->
-  <script type="module">
-    import { sdk } from 'https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest/+esm';
-    
-    // Call ready immediately when the page loads
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        console.log('Calling sdk.actions.ready()...');
-        await sdk.actions.ready();
-        console.log('Farcaster Mini App ready - splash screen should be hidden');
-      } catch (error) {
-        console.log('Farcaster SDK not available, running in standalone mode:', error);
-      }
-    });
-  </script>
   
   <script src="script.js"></script>
 </body>
