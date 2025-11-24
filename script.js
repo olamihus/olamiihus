@@ -686,3 +686,8 @@ if (window.self !== window.top) {
     viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
   }
 }
+// Start the game
+document.addEventListener("DOMContentLoaded", async () => {
+    await initFrame();  // ← This hides the splash screen
+    init();
+});
