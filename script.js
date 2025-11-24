@@ -1,3 +1,29 @@
+import { sdk } from 'https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest/+esm';
+
+// Initialize Farcaster Mini App SDK immediately
+let farcasterInitialized = false;
+
+const initializeFarcasterSDK = async () => {
+  try {
+    if (sdk && sdk.actions) {
+      await sdk.actions.ready();
+      console.log('Farcaster Mini App ready - splash screen hidden');
+      farcasterInitialized = true;
+      
+      // Optional: Listen for frame actions if needed
+      sdk.actions.on('action', (event) => {
+        console.log('Frame action received:', event);
+      });
+    }
+  } catch (error) {
+    console.log('Farcaster Mini App SDK not available - running in standalone mode');
+  }
+};
+
+// Call this immediately when the module loads
+initializeFarcasterSDK();
+
+// Your existing game code wrapped in IIFE
 (() => {
   const palette = ["#f43f5e", "#fb923c", "#facc15", "#22c55e", "#3b82f6", "#a855f7"];
   const floodDelay = 55;
@@ -201,59 +227,12 @@
     });
   };
 
-  // Enhanced Farcaster & Base Mini App Integration
-  const initMiniApp = async () => {
-    try {
-      // Base Mini App SDK
-      if (window.EmbedSDK) {
-        window.EmbedSDK.init();
-        console.log('Base Mini App SDK initialized');
-      }
-      
-      // Farcaster Mini App SDK - THIS IS THE KEY ADDITION
-      if (window.sdk && window.sdk.actions) {
-        // Call ready() as soon as the app is loaded to hide the splash screen
-        await window.sdk.actions.ready();
-        console.log('Farcaster Mini App ready - splash screen hidden');
-        
-        // Optional: Listen for frame actions if needed
-        window.sdk.actions.on('action', (event) => {
-          console.log('Frame action received:', event);
-        });
-      } else if (window.FarcasterFrameSdk) {
-        // Fallback for older SDK versions
-        FarcasterFrameSdk.actions.ready();
-        console.log('Farcaster Frame ready');
-        
-        FarcasterFrameSdk.actions.on('action', (event) => {
-          console.log('Frame action received:', event);
-        });
-      } else {
-        console.log('Farcaster Mini App SDK not detected - running in standalone mode');
-      }
-      
-      // Check if running in embedded environment
-      if (window.ethereum && window.ethereum.isMiniApp) {
-        console.log('Running in Warpcast Mini App');
-      }
-      
-      // Handle mobile viewport for embedded apps
-      if (window.self !== window.top) {
-        document.body.classList.add('embedded');
-        
-        const viewport = document.querySelector('meta[name="viewport"]');
-        if (viewport) {
-          viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        }
-      }
-    } catch (error) {
-      console.error('Error initializing mini app:', error);
-    }
-  };
-
   const init = () => {
-    // Initialize Farcaster Mini App SDK first
-    initMiniApp();
+    // Initialize Base Mini App SDK
+    if (window.EmbedSDK) {
+      window.EmbedSDK.init();
+      console.log('Base Mini App SDK initialized');
+    }
     
     // Then initialize the game
     buildButtons();
