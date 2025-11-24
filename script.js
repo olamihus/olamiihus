@@ -688,6 +688,6 @@ if (window.self !== window.top) {
 }
 // Start the game
 document.addEventListener("DOMContentLoaded", async () => {
-    await initFrame();  // ← This hides the splash screen
+    await initFrame();
     init();
 });
