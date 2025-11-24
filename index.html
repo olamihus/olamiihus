@@ -7,20 +7,7 @@
   <!-- Base Mini App Tags -->
   <meta name="mini-app" content="embed-sdk-v1">
   <meta name="ethereum-domain-verification" content="domainbaseorg">
-  <meta 
-  name="fc:miniapp" 
-  content='{
-    "version": "next",
-    "imageUrl": "https://i.imgur.com/qvzaD42.png",
-    "button": {
-      "title": "Play Filler Quest", 
-      "action": {
-        "type": "launch_frame", 
-        "url": "https://olamiihus.vercel.app/"
-      }
-    }
-  }'
-/>
+  
   <!-- Farcaster Frame Meta Tags -->
   <meta property="fc:frame" content="vNext" />
   <meta property="fc:frame:image" content="https://i.imgur.com/DGVIXpm.png" />
@@ -124,23 +111,13 @@
   <audio id="moveSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/click-soft.mp3" preload="auto"></audio>
   <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/pop-soft.mp3" preload="auto"></audio>
   <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/error-tone.mp3" preload="auto"></audio>
-<!-- Add Farcaster Mini App SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest"></script>
 
-<!-- Add Base SDK -->
-<script src="https://embed-sdk.base.org/embed-sdk.js"></script>
-  <!-- ========== BASE MINI APP SDK ========== -->
-  <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
-  <script>
-    <!-- Add this right before your script.js -->
-<script type="module">
-  import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-  window.FarcasterMiniAppSDK = sdk;
+  <!-- Add Farcaster Mini App SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@farcaster/miniapp-sdk@latest"></script>
   
-  document.addEventListener('DOMContentLoaded', async () => {
-    await sdk.actions.ready();
-  });
-</script>
-<script src="script.js"></script
+  <!-- Add Base SDK -->
+  <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
+  
+  <script src="script.js"></script>
 </body>
 </html>
