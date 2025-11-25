@@ -6,7 +6,21 @@
   
   <!-- Base Mini App Tags -->
   <meta name="mini-app" content="embed-sdk-v1">
-  <meta name="ethereum-domain-verification" content="domainbaseorg">
+   <!-- ========== OLD FARCASTER MINI APP FORMAT (for Base.dev preview) ========== -->
+  <meta 
+    name="fc:miniapp" 
+    content='{
+      "version": "next",
+      "imageUrl": "https://i.imgur.com/qvzaD42.png",
+      "button": {
+        "title": "Play Filler Quest",
+        "action": {
+          "type": "launch_frame", 
+          "url": "https://olamihus.vercel.app/"
+        }
+      }
+    }'
+  />
   
   <!-- Farcaster Frame Meta Tags -->
   <meta property="fc:frame" content="vNext" />
@@ -22,6 +36,8 @@
   <meta property="og:title" content="Filler Quest">
   <meta property="og:description" content="Fill each board before the moves run out. A colorful puzzle game!">
   <meta property="og:image" content="https://i.imgur.com/DGVIXpm.png">
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://olamihus.vercel.app/">
   
@@ -111,16 +127,18 @@
   <audio id="moveSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/click-soft.mp3" preload="auto"></audio>
   <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/pop-soft.mp3" preload="auto"></audio>
   <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/error-tone.mp3" preload="auto"></audio>
-
-  <!-- Add Base SDK -->
+<!-- Base Mini App SDK -->
   <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
-  <script>
-    // Initialize Base Mini App SDK
-    if (window.EmbedSDK) {
-      window.EmbedSDK.init();
-    }
-  </script>
   
+  <!-- Farcaster Mini App SDK - THIS HIDES THE SPLASH SCREEN -->
+  <script type="module">
+    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+    window.FarcasterMiniAppSDK = sdk;
+  document.addEventListener('DOMContentLoaded', async () => {
+      await sdk.actions.ready();
+    });
+    </script>
+  <!-- Your Game Script -->
   <script src="script.js"></script>
 </body>
 </html>
