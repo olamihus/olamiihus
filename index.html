@@ -4,53 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- ========== BASE MINI APP REQUIRED TAGS ========== -->
+  <!-- Base Mini App Tags -->
   <meta name="mini-app" content="embed-sdk-v1">
+  <meta name="ethereum-domain-verification" content="domainbaseorg">
   
-  <!-- ========== OLD FARCASTER MINI APP FORMAT (for Base.dev preview) ========== -->
-  <meta 
-    name="fc:miniapp" 
-    content='{
-      "version": "next",
-      "imageUrl": "https://i.imgur.com/qvzaD42.png",
-      "button": {
-        "title": "Play Filler Quest",
-        "action": {
-          "type": "launch_frame", 
-          "url": "https://max-five-blue.vercel.app/"
-        }
-      }
-    }'
-  />
-  
-  <!-- ========== NEW FARCASTER FRAME TAGS ========== -->
+  <!-- Farcaster Frame Meta Tags -->
   <meta property="fc:frame" content="vNext" />
-  <meta property="fc:frame:image" content="https://i.imgur.com/qvzaD42.png" />
-  <meta property="fc:frame:image:aspect_ratio" content="1.91:1" />
+  <meta property="fc:frame:image" content="https://i.imgur.com/DGVIXpm.png" />
   <meta property="fc:frame:button:1" content="Play Filler Quest" />
-  <meta property="fc:frame:post_url" content="https://max-five-blue.vercel.app/" />
+  <meta property="fc:frame:post_url" content="https://olamihus.vercel.app/" />
   
-  <!-- ========== SOCIAL TAGS ========== -->
-  <meta property="og:title" content="Filler Quest" />
-  <meta property="og:description" content="Fill each board before the moves run out! A colorful puzzle game." />
-  <meta property="og:image" content="https://i.imgur.com/qvzaD42.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://max-five-blue.vercel.app/" />
+  <!-- Farcaster Mini App Meta Tag -->
+  <meta name="fc:miniapp" content="https://olamihus.vercel.app/" />
   
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Filler Quest" />
-  <meta name="twitter:description" content="Fill each board before the moves run out! A colorful puzzle game." />
-  <meta name="twitter:image" content="https://i.imgur.com/qvzaD42.png" />
+  <!-- Social Media Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:title" content="Filler Quest">
+  <meta property="og:description" content="Fill each board before the moves run out. A colorful puzzle game!">
+  <meta property="og:image" content="https://i.imgur.com/DGVIXpm.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://olamihus.vercel.app/">
   
   <title>Filler Quest</title>
   <link rel="stylesheet" href="style.css" />
-  
-  <!-- Manifest Link -->
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <button id="drawerToggle" class="drawer-toggle" aria-expanded="false" aria-label="Open controls">⚙️</button>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h2>Game Controls</h2>
+      <button id="drawerClose" class="icon-btn ghost-icon" aria-label="Close controls">✕</button>
+    </div>
+    <div class="drawer-section">
+      <p class="drawer-label">Summary</p>
+      <p>Level <span id="drawerLevel">1</span></p>
+      <p>Points <span id="drawerPoints">0</span></p>
+    </div>
+    <div class="drawer-section">
+      <p class="drawer-label">Preferences</p>
+      <button id="soundToggle" class="icon-btn" aria-pressed="false">🔊 Sound</button>
+      <label class="theme-select">
+        Theme
+        <select id="themeSelect" aria-label="Choose theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="colorful">Colorful</option>
+        </select>
+      </label>
+    </div>
+    <div class="drawer-section">
+      <p class="drawer-label">Actions</p>
+      <button id="resetBtn" class="reset-btn full">Restart Level</button>
+      <button id="newGameBtn" class="ghost-btn full">New Game (reset points)</button>
+    </div>
+  </aside>
+  <div id="drawerBackdrop" class="drawer-backdrop hidden" aria-hidden="true"></div>
   <div class="app">
     <header>
       <h1>Filler Quest</h1>
@@ -58,24 +67,24 @@
     </header>
 
     <section class="stats">
-      <div class="chip">Level <span id="levelDisplay">1</span></div>
-      <div class="chip">Moves <span id="moveCount">0</span>/<span id="moveLimit">0</span></div>
-      <div class="chip">Points <span id="pointsTotal">0</span></div>
+      <div class="chip">
+        Level <span id="levelDisplay">1</span>
+      </div>
+      <div class="chip">
+        Moves <span id="moveCount">0</span>/<span id="moveLimit">0</span>
+      </div>
+      <div class="chip">
+        Points <span id="pointsTotal">0</span>
+      </div>
     </section>
 
     <section class="board-wrapper">
-      <div id="board" class="board"></div>
+      <div id="board" class="board" aria-label="Filler board"></div>
     </section>
 
     <section class="controls">
       <div id="colorButtons" class="color-buttons"></div>
     </section>
-
-    <div class="game-controls">
-      <button id="resetBtn" class="reset-btn">Restart Level</button>
-      <button id="newGameBtn" class="new-game-btn">New Game</button>
-      <button id="soundToggle" class="sound-btn">🔊 Sound</button>
-    </div>
   </div>
 
   <div id="levelOverlay" class="overlay hidden">
@@ -86,26 +95,32 @@
     </div>
   </div>
 
-  <!-- Audio Elements -->
-  <audio id="moveSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets@master/click-soft.mp3" preload="auto"></audio>
-  <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets@master/pop-soft.mp3" preload="auto"></audio>
-  <audio id="winSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets@master/success-bell.mp3" preload="auto"></audio>
-  <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets@master/error-tone.mp3" preload="auto"></audio>
+  <div id="tutorial" class="tutorial hidden">
+    <div class="tutorial-card">
+      <h3>How to Play</h3>
+      <p id="tutorialText"></p>
+      <div class="tutorial-actions">
+        <button id="tutorialBtn">Got it</button>
+        <button id="skipTutorialBtn" class="ghost-btn">Skip Tutorial</button>
+      </div>
+    </div>
+  </div>
 
-  <!-- Base Mini App SDK -->
+  <div id="particles" aria-hidden="true"></div>
+  <audio id="bgMusic" src="me.mp3" preload="auto"></audio>
+  <audio id="moveSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/click-soft.mp3" preload="auto"></audio>
+  <audio id="fillSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/pop-soft.mp3" preload="auto"></audio>
+  <audio id="loseSound" src="https://cdn.jsdelivr.net/gh/itsrealfake/audio-snippets/error-tone.mp3" preload="auto"></audio>
+
+  <!-- Add Base SDK -->
   <script src="https://embed-sdk.base.org/embed-sdk.js"></script>
-  
-  <!-- Farcaster Mini App SDK - THIS HIDES THE SPLASH SCREEN -->
-  <script type="module">
-    import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-    window.FarcasterMiniAppSDK = sdk;
-    
-    document.addEventListener('DOMContentLoaded', async () => {
-      await sdk.actions.ready();
-    });
+  <script>
+    // Initialize Base Mini App SDK
+    if (window.EmbedSDK) {
+      window.EmbedSDK.init();
+    }
   </script>
   
-  <!-- Your Game Script -->
   <script src="script.js"></script>
 </body>
 </html>
