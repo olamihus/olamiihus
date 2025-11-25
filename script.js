@@ -11,47 +11,6 @@ async function initFrame() {
     }
 }
 
-// Enhanced Farcaster & Base Mini App Integration
-const initMiniApp = () => {
-    // Base Mini App SDK
-    if (window.EmbedSDK) {
-        window.EmbedSDK.init();
-        console.log('Base Mini App SDK initialized');
-    }
-    
-    // Farcaster Frame Integration - CALL READY() IMMEDIATELY
-    if (window.FarcasterFrameSdk) {
-        try {
-            // This is the key line - call ready() immediately
-            FarcasterFrameSdk.actions.ready();
-            console.log('Farcaster Frame ready - splash screen should be hidden');
-            
-            FarcasterFrameSdk.actions.on('action', (event) => {
-                console.log('Frame action received:', event);
-            });
-        } catch (error) {
-            console.log('Farcaster Frame SDK not available');
-        }
-    }
-    
-    if (window.ethereum && window.ethereum.isMiniApp) {
-        console.log('Running in Warpcast Mini App');
-    }
-};
-
-// Call initMiniApp immediately when script loads
-initMiniApp();
-
-// Handle mobile viewport for embedded apps
-if (window.self !== window.top) {
-    document.body.classList.add('embedded');
-    
-    const viewport = document.querySelector('meta[name="viewport"]');
-    if (viewport) {
-        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-    }
-}
-
 // Main Game Code
 (() => {
     const palette = ["#f43f5e", "#fb923c", "#facc15", "#22c55e", "#3b82f6", "#a855f7"];
