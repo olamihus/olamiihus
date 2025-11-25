@@ -37,6 +37,19 @@
   const moveSound = document.getElementById("moveSound");
   const fillSound = document.getElementById("fillSound");
   const loseSound = document.getElementById("loseSound");
+
+  // Farcaster Mini App SDK Integration
+async function initFrame() {
+    try {
+        // Wait for the SDK to be ready
+        if (window.FarcasterMiniAppSDK) {
+            await window.FarcasterMiniAppSDK.actions.ready();
+            console.log('Mini App ready - splash screen hidden');
+        }
+    } catch (error) {
+        console.log('Mini App SDK not available, running in standalone mode');
+    }
+}
   
   // Background music
   const bgMusic = document.getElementById("bgMusic");
