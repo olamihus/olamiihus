@@ -38,6 +38,20 @@
   const moveSound = document.getElementById("moveSound");
   const fillSound = document.getElementById("fillSound");
   const loseSound = document.getElementById("loseSound");
+  // ========== GAME INITIALIZATION ==========
+// Farcaster Mini App SDK Integration
+async function initFrame() {
+    try {
+        // Wait for the SDK to be ready
+        if (window.FarcasterMiniAppSDK) {
+            await window.FarcasterMiniAppSDK.actions.ready();
+            console.log('Mini App ready - splash screen hidden');
+        }
+    } catch (error) {
+        console.log('Mini App SDK not available, running in standalone mode');
+    }
+}
+
 // Background music
 const bgMusic = document.getElementById("bgMusic");
 let bgMusicEnabled = localStorage.getItem("bgMusicEnabled") !== "off";
@@ -59,8 +73,6 @@ window.addEventListener("click", function enableBG() {
   let animating = false;
   let tutorialDismissed = false;
   let moveLimit = 0;
-  let totalPoints = Number(localStorage.getItem("fillerPoints") || 0);
-  let soundEnabled = localStorage.getItem("fillerSound") !== "off";
   let activeTheme = localStorage.getItem("fillerTheme") || "light";
   let tutorialCompleted = localStorage.getItem("fillerTutorialComplete") === "true";
   let tutorialActive = false;
@@ -604,3 +616,8 @@ if (window.self !== window.top) {
     viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
   }
 }
+// Start the game
+document.addEventListener("DOMContentLoaded", async () => {
+    await initFrame();  // ← This hides the splash screen
+    init();
+});
